@@ -1,0 +1,7 @@
+Django==1.4
+distribute==0.6.24
+psycopg2==2.4.4
+wsgiref==0.1.2
+gunicorn==0.13.4
+hg+https://bitbucket.org/ubernostrum/django-registration/@fad7080fe769
+django-recaptcha

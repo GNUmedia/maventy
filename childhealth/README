@@ -1,0 +1,30 @@
+** Django
+
+Start app with:
+
+$ source venv/bin/activate
+$ python childhealth/manage.py run_gunicorn
+
+
+** Postgres
+
+After installing a default postgres on Ubuntu, there is a postgres
+user with no password.
+
+See https://help.ubuntu.com/community/PostgreSQL#Create_database
+
+$ sudo apt-get install postgresql
+$ sudo -u postgres createdb childhealth_db
+
+Create yourself a user:
+
+$ sudo -u postgres createuser --superuser $USER
+
+
+** pip
+
+Install all the required packages:
+
+$ pip install -r requirements.txt
+
+See also http://www.pip-installer.org/en/latest/requirements.html.
