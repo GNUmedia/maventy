@@ -23,8 +23,19 @@ $ sudo -u postgres createuser --superuser $USER
 
 ** pip
 
-Install all the required packages:
+- First-time pip install (might not require sudo):
 
+$ sudo easy_install pip
+$ sudo pip install virtualenv
+$ virtualenv --distribute venv
+
+Install hg (Mercury)
+
+$ brew install hg (OS X)
+
+- Install all the required packages:
+
+$ source venv/bin/activate
 $ pip install -r requirements.txt
 
 See also http://www.pip-installer.org/en/latest/requirements.html.
