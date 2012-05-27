@@ -1,6 +1,5 @@
-- Add Patient.created_by_user
 - Add Visit.created_by_user
 - Add VisitStatistics
-- Add visits to Patient
-- Add vaccinations
+- Make sure Patient.{edited_by_user,created_by_user} works in regular interface
+- Add patient vaccinations
 - Internationalize
