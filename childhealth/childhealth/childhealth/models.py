@@ -2,6 +2,9 @@
 
 from django.db import models
 
+import logging
+import util
+
 class Vaccination(object):
   """A class to contain records about a Vaccination given to a patient."""
   def __init__(self, date_list = []):
@@ -43,18 +46,12 @@ class Country(models.Model):
     class Meta:
         verbose_name_plural = "countries"
 
-#    class Admin:
-#        list_display =  ('name')
-
     name = models.CharField(max_length=255)
 
     def __unicode__(self):
       return self.name
 
 class Organization(models.Model):
-#    class Admin:
-#        list_display =  ('name')
-
     name = models.CharField(max_length=255)
 
     def __unicode__(self):
@@ -77,8 +74,6 @@ class Patient(models.Model):
     # created_by_user = models.ForeignKey('User')
 
     # Easy way to refer to a patient
-    # TODO(dan): Make short_string blank=False.  It's a little tricky.
-    # TODO(dan): assign short string automatically
     short_string = models.CharField(max_length=10, blank=True, unique=True)
 
     name = models.CharField(max_length=255)
@@ -128,12 +123,13 @@ class Patient(models.Model):
     # deworming: mebendazole
   #  deworming_vaccinations = VaccinationProperty(blank=True)
 
-  #  @staticmethod
-  #  def get_by_short_string(short_string):
-  #    return Patient.gql('WHERE short_string = :1', short_string).get()
+    @staticmethod
+    def get_by_short_string(short_string):
+      return Patient.objects.filter(short_string = short_string)
 
-    def assign_short_string(self):
-      assert self.short_string is None, "Tried to assign short_string twice"
+    def assign_short_string(self): 
+      assert (self.short_string is None or not self.short_string,
+             "Tried to assign short_string twice: '%s'" % self.short_string)
       while not self.short_string:
         # 1 / (31^6) = 1e-9 is the probability two strings collide
         # in an empty space
@@ -141,10 +137,12 @@ class Patient(models.Model):
         astr = util.random_string(6)
         if not Patient.get_by_short_string(astr):
           self.short_string = astr
-          #logging.info('assigned short string: %s' % self.short_string)
-          # There are funny race conditions if we don't save
-          # Do we need the whole "sharded counter" business?
-          # self.save
+          logging.info('assigned short string: %s' % self.short_string)
+
+    def save(self, *args, **kwargs):
+      if not self.short_string: self.assign_short_string()
+      # TODO(dan): Add created_by_user
+      super(Patient, self).save(*args, **kwargs)
 
     def __unicode__(self):
       return "%s, %s, %s (%s)" % (self.name,
