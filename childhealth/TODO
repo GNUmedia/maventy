@@ -1,6 +1,5 @@
 - Add Patient.created_by_user
 - Add Visit.created_by_user
-- Add custom model validation for height, weight, head_circumference
 - Add VisitStatistics
 - Add visits to Patient
 - Add vaccinations

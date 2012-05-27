@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from patient_model import Patient
 
@@ -30,14 +31,28 @@ class Visit(models.Model):
     # we need to specify a default visit_date.  On the bright side,
     # form validation can still catch an unset property
     visit_date = models.DateField(default = date.today())
-    weight = models.FloatField(default = 0.0)
-    head_circumference = models.FloatField(blank=True, null=True)
-    height = models.FloatField(default = 0.0)
-    # Unfortunately, due to the way we init visit with parent Patient,
-    # we need to specify a default height_position.  On the bright side,
-    # form validation can still catch an unset property
-    height_position = models.IntegerField(choices=HEIGHT_POSITION,
-                                          default=STANDING)
+
+    # weight in kilograms
+    # min_value is INPUT_MINWEIGHT from WHO's AnthroComputation.cs
+    # max_value is INPUT_MAXWEIGHT from WHO's AnthroComputation.cs
+    weight = models.FloatField(
+        validators = [MinValueValidator(0.9), MaxValueValidator(58)])
+
+    # head circumference in centimeters
+    # (only provide for children 0-24 months old)
+    # min_value is INPUT_MINHC from WHO's AnthroComputation.cs
+    # max_value is INPUT_MAXHC from WHO's AnthroComputation.cs
+    head_circumference = models.FloatField(blank=True, null=True,
+                                           validators = [MinValueValidator(25),
+                                                         MaxValueValidator(64)])
+    # height in centimeters
+    # min_value is INPUT_MINLENGTHORHEIGHT from WHO's AnthroComputation.cs
+    # max_value is INPUT_MAXLENGTHORHEIGHT from WHO's AnthroComputation.cs
+    height = models.FloatField(validators = [MinValueValidator(38),
+                                             MaxValueValidator(150)])
+
+    height_position = models.IntegerField(choices=HEIGHT_POSITION)
+
 #    visit_statistics = models.ReferenceProperty(
 #        reference_class = VisitStatistics,
 #        blank=True, null=True, default = None)
