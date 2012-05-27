@@ -1,0 +1,5 @@
+- Add Patient.short_string automatically
+- Add Patient.created_by_user
+- Add Visit
+- Add visits to Patient
+- Add vaccinations

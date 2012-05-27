@@ -5,3 +5,6 @@ wsgiref==0.1.2
 gunicorn==0.13.4
 hg+https://bitbucket.org/ubernostrum/django-registration/@fad7080fe769
 django-recaptcha
+
+# django admin requires docutils
+docutils==0.9

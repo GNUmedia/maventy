@@ -1,5 +1,7 @@
 # Django settings for childhealth project.
 
+# import private_settings
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -11,12 +13,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'childhealth.sqlite3', # Path to database file if using sqlite3
+        # The following settings Not used with sqlite3.
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',    # Set to empty string for localhost.
+        'PORT': '',    # Set to empty string for default.
     }
 }
 
@@ -102,6 +105,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'childhealth.urls'
 
+# Custom user fields, see http://www.djangobook.com/en/beta/chapter12/#cn226
+AUTH_PROFILE_MODULE = "childhealth.userprofile"
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'childhealth.wsgi.application'
 
@@ -119,10 +125,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    'gunicorn'
+    'django.contrib.admindocs',
+    'gunicorn',
+    'childhealth',
 )
 
 # A sample logging configuration. The only tangible logging
