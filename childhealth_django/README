@@ -3,7 +3,7 @@
 Start app with:
 
 $ source venv/bin/activate
-$ python childhealth/manage.py run_gunicorn
+$ python childhealth_project/manage.py run_gunicorn
 
 
 ** Postgres
