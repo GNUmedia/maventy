@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.contrib.auth.models import User
 
 import logging
 import util
 
-import misc_models
+from misc_models import Country, Organization
 
 class Patient(models.Model):
     MALE = 'MALE'
@@ -19,9 +20,17 @@ class Patient(models.Model):
     # Last edited in this DB
     last_edited = models.DateTimeField(auto_now=True)
 
-    # user who created the visit
-    # TODO(dan): Implement custom user
-    # created_by_user = models.ForeignKey('User')
+    # user who created the patient
+    # NOTE(dan): null=True for PatientAdmin.save_model.
+    created_by_user = models.ForeignKey(User, related_name='created_by_user',
+                                        editable = False,
+                                        null = True)
+
+    # user who last edited the patient
+    # NOTE(dan): null=True for PatientAdmin.save_model.
+    edited_by_user = models.ForeignKey(User, related_name='edited_by_user',
+                                       editable = False,
+                                       null = True)
 
     # Easy way to refer to a patient
     short_string = models.CharField(max_length=10, blank=True, unique=True)
@@ -32,16 +41,16 @@ class Patient(models.Model):
     birth_date = models.DateField()
 
     residence = models.CharField(max_length=255, blank=True)
-    organization = models.ForeignKey('Organization')
+    organization = models.ForeignKey(Organization)
 
     # TODO(dan): How to properly translate country names?  Do we need to?
-    country = models.ForeignKey('Country')
+    country = models.ForeignKey(Country)
     caregiver_name = models.CharField(max_length=255, blank=True)
 
     # Cached from latest visit, to sort by
   #  latest_visit_date = models.DateField(blank=True, null=True)
     # Cached from latest visit, to sort by
-  #  latest_visit = models.ForeignKey('Visit', blank=True, null=True)
+  #  latest_visit = models.ForeignKey(Visit, blank=True, null=True)
   #  latest_visit_number = models.IntegerProperty(blank=True, null=True)
     # Cached from latest_visit_worst_zscore, to filter by
   #  latest_visit_worst_zscore_rounded = models.FloatProperty(blank=True, null=True)
@@ -78,8 +87,8 @@ class Patient(models.Model):
       return Patient.objects.filter(short_string = short_string)
 
     def assign_short_string(self): 
-      assert (self.short_string is None or not self.short_string,
-             "Tried to assign short_string twice: '%s'" % self.short_string)
+      assert self.short_string is None or not self.short_string, \
+             "Tried to assign short_string twice: '%s'" % self.short_string
       while not self.short_string:
         # 1 / (31^6) = 1e-9 is the probability two strings collide
         # in an empty space
