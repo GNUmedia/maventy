@@ -39,39 +39,39 @@ class Patient(models.Model):
     caregiver_name = models.CharField(max_length=255, blank=True)
 
     # Cached from latest visit, to sort by
-  #  latest_visit_date = models.DateField(blank=True)
+  #  latest_visit_date = models.DateField(blank=True, null=True)
     # Cached from latest visit, to sort by
-  #  latest_visit = models.ForeignKey('Visit', blank=True)
-  #  latest_visit_number = models.IntegerProperty(blank=True)
+  #  latest_visit = models.ForeignKey('Visit', blank=True, null=True)
+  #  latest_visit_number = models.IntegerProperty(blank=True, null=True)
     # Cached from latest_visit_worst_zscore, to filter by
-  #  latest_visit_worst_zscore_rounded = models.FloatProperty(blank=True)
+  #  latest_visit_worst_zscore_rounded = models.FloatProperty(blank=True, null=True)
 
     # Vaccination records
     # TODO(dan): Could do a list property of vaccinations instead.
     # Might be cleaner.
 
     # polio
-  #  polio_vaccinations = VaccinationProperty(blank=True)
+  #  polio_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # diphtérie, Tétanos, Coqueluche (French: diphtheria, tetanus, and whooping cough)
-  #  dtc_vaccinations = VaccinationProperty(blank=True)
+  #  dtc_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # hepatitis
-  #  hepb_vaccinations = VaccinationProperty(blank=True)
+  #  hepb_vaccinations = VaccinationProperty(blank=True, null=True)
 
-  #  measles_vaccinations = VaccinationProperty(blank=True)
+  #  measles_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # hib is hemophilus influenzae
-  #  hib_vaccinations = VaccinationProperty(blank=True)
+  #  hib_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # http://en.wikipedia.org/wiki/Bacillus_Calmette-Gu%C3%A9rin against tuberculosis
-  #  bcg_vaccinations = VaccinationProperty(blank=True)
+  #  bcg_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # vitamin A
-  #  vita_vaccinations = VaccinationProperty(blank=True)
+  #  vita_vaccinations = VaccinationProperty(blank=True, null=True)
 
     # deworming: mebendazole
-  #  deworming_vaccinations = VaccinationProperty(blank=True)
+  #  deworming_vaccinations = VaccinationProperty(blank=True, null=True)
 
     @staticmethod
     def get_by_short_string(short_string):
